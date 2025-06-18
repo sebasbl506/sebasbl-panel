@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>SEBAS_BL PANEL</title>
+</head>
+<body style="background:black;color:white;text-align:center;padding:50px;">
+  <h1>🎧 Bienvenido a SEBAS_BL PANEL</h1>
+  <p>Modo dios activado. Música y panel funcionando.</p>
+  <audio id="musica" autoplay loop>
+    <source src="assets/musica_fondo.mp3" type="audio/mpeg" />
+  </audio>
+  <script>
+    document.body.onclick = () => {
+      document.getElementById("musica").play();
+    };
+  </script>
+</body>
+</html>

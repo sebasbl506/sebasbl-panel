@@ -1,0 +1,57 @@
+
+<script>
+    const pinCorrecto = "1506";
+    const claveGuardada = localStorage.getItem("sebas_pin");
+
+    function pedirPin() {
+        const pin = prompt("🔒 Panel protegido. Ingresa el PIN de acceso:");
+        if (pin === pinCorrecto) {
+            localStorage.setItem("sebas_pin", pin);
+        } else {
+            alert("❌ PIN incorrecto. Acceso denegado.");
+            location.reload();
+        }
+    }
+
+    if (claveGuardada !== pinCorrecto) {
+        pedirPin();
+    }
+</script>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Pedidos Pendientes</title>
+</head>
+<body>
+    <h1>Panel de Administración - Aprobar Pedidos</h1>
+    <p><strong>Pedidos recibidos:</strong></p>
+    <ul id="orders"></ul>
+    <script>
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const list = document.getElementById("orders");
+        if (orders.length === 0) {
+            list.innerHTML = "<li>No hay pedidos pendientes.</li>";
+        } else {
+            orders.forEach((order, index) => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <strong>Servicio:</strong> ${order.service} |
+                    <strong>Enlace:</strong> ${order.link} |
+                    <strong>Cantidad:</strong> ${order.amount}
+                    <button onclick="approve(${index})">Aprobar</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function approve(index) {
+            const approved = orders.splice(index, 1)[0];
+            localStorage.setItem('orders', JSON.stringify(orders));
+            alert("Pedido aprobado. Debes enviarlo manualmente al proveedor.");
+            location.reload();
+        }
+    </script>
+</body>
+</html>

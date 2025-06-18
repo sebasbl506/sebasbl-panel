@@ -1,0 +1,62 @@
+
+<script>
+    const pinCorrecto = "1506";
+    const claveGuardada = localStorage.getItem("sebas_pin");
+
+    function pedirPin() {
+        const pin = prompt("🔒 Panel protegido. Ingresa el PIN de acceso:");
+        if (pin === pinCorrecto) {
+            localStorage.setItem("sebas_pin", pin);
+        } else {
+            alert("❌ PIN incorrecto. Acceso denegado.");
+            location.reload();
+        }
+    }
+
+    if (claveGuardada !== pinCorrecto) {
+        pedirPin();
+    }
+</script>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SebasBL Panel</title>
+    <script>
+        async function cargarServicios() {
+            const response = await fetch('services.json');
+            const servicios = await response.json();
+            const select = document.getElementById('servicio');
+
+            servicios.forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.service_id;
+                option.textContent = `${s.name} - $${s.price_cop}`;
+                select.appendChild(option);
+            });
+        }
+
+        window.onload = cargarServicios;
+    </script>
+</head>
+<body>
+    <h1>Bienvenido a SebasBL Panel</h1>
+    <form action="/submit" method="POST">
+        <label for="servicio">Selecciona un servicio:</label><br>
+        <select id="servicio" name="servicio">
+            <option value="">Cargando servicios...</option>
+        </select><br><br>
+
+        <label for="link">Enlace:</label><br>
+        <input type="text" id="link" name="link"><br><br>
+
+        <label for="amount">Cantidad:</label><br>
+        <input type="number" id="amount" name="amount"><br><br>
+
+        <p>Realiza el pago a Nequi 3125085660 y contáctanos por WhatsApp.</p>
+        <button type="submit">Hacer Pedido</button>
+    </form>
+    <p>Tu pedido será revisado y aprobado manualmente.</p>
+</body>
+</html>

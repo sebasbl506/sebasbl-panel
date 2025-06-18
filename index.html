@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEBASBL Panel Notificador</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #fff;
+      text-align: center;
+      padding-top: 5vh;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      box-shadow: 0 0 20px #0ff;
+    }
+    .btn {
+      margin: 1rem;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      background-color: #00ffe7;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn:hover { background-color: #00ff88; }
+    .factura, .notificacion {
+      background: #111;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 2px dashed #0ff;
+      border-radius: 10px;
+    }
+    .hidden { display: none; }
+    .alerta {
+      background: #f00;
+      padding: 10px;
+      font-weight: bold;
+      color: #fff;
+      margin-top: 1rem;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ SEBASBL PANEL VIP ⚡</h1>
+  <div class="container">
+    <button class="btn" onclick="mostrarLogin('admin')">Admin</button>
+    <button class="btn" onclick="mostrarLogin('cliente')">Cliente</button>
+
+    <div id="loginBox" class="hidden">
+      <p>Ingresa el PIN:</p>
+      <input type="password" id="pinInput" placeholder="PIN" />
+      <button class="btn" onclick="acceder()">Entrar</button>
+    </div>
+
+    <div id="adminPanel" class="hidden">
+      <h2>Bienvenido Admin</h2>
+      <div class="notificacion" id="notiBox">
+        <h3>Pedidos Recientes</h3>
+        <div id="pedidosList">Sin pedidos nuevos.</div>
+      </div>
+    </div>
+
+    <div id="clientePanel" class="hidden">
+      <h2>Bienvenido Cliente</h2>
+      <select id="producto">
+        <option value="">Selecciona un producto</option>
+        <option value="Vistas YouTube - 20k">Vistas YouTube - 20,000</option>
+        <option value="Seguidores TikTok - 52k">Seguidores TikTok - 52,000</option>
+      </select>
+      <input type="number" id="cantidad" placeholder="Cantidad" min="1000" value="1000"/>
+      <button class="btn" onclick="enviarPedido()">Hacer Pedido</button>
+
+      <div class="factura">
+        <h3>Factura</h3>
+        <p>Producto: <span id="factProd">-</span></p>
+        <p>Cantidad: <span id="factCant">-</span></p>
+        <p>Estado: <span id="factEstado">Pago pendiente</span></p>
+      </div>
+    </div>
+
+    <div class="alerta" id="alertaAdmin">⚠️ Nuevo pedido recibido</div>
+  </div>
+
+  <script>
+    let tipo = '', pedidos = [];
+
+    function mostrarLogin(t) {
+      tipo = t;
+      document.getElementById("loginBox").classList.remove("hidden");
+    }
+
+    function acceder() {
+      const pin = document.getElementById("pinInput").value;
+      if (tipo === "admin" && pin === "1506") {
+        document.getElementById("adminPanel").classList.remove("hidden");
+        mostrarPedidos();
+      } else if (tipo === "cliente" && pin === "0000") {
+        document.getElementById("clientePanel").classList.remove("hidden");
+      } else {
+        alert("PIN incorrecto");
+      }
+    }
+
+    function enviarPedido() {
+      const prod = document.getElementById("producto").value;
+      const cant = document.getElementById("cantidad").value;
+
+      if (!prod || cant < 1000) {
+        alert("Selecciona un producto y cantidad válida");
+        return;
+      }
+
+      document.getElementById("factProd").innerText = prod;
+      document.getElementById("factCant").innerText = cant;
+      document.getElementById("factEstado").innerText = "Pago pendiente";
+
+      pedidos.push({ producto: prod, cantidad: cant, estado: "pendiente" });
+      document.getElementById("alertaAdmin").style.display = "block";
+
+      setTimeout(() => {
+        document.getElementById("alertaAdmin").style.display = "none";
+      }, 5000);
+    }
+
+    function mostrarPedidos() {
+      const list = document.getElementById("pedidosList");
+      if (pedidos.length === 0) {
+        list.innerHTML = "Sin pedidos nuevos.";
+        return;
+      }
+
+      let html = "";
+      pedidos.forEach((p, i) => {
+        
+html += `<p><b>#${i+1}</b> - ${p.producto} x ${p.cantidad} - Estado: ${p.estado} ` +
+  (p.estado === "pendiente" ? `<button onclick="confirmarPedido(${i})">✅ Confirmar</button>` : "") +
+  `</p>`;
+
+      });
+      list.innerHTML = html;
+    }
+  
+    function confirmarPedido(index) {
+      pedidos[index].estado = "confirmado";
+      mostrarPedidos();
+    }
+  </script>
+
+</body>
+</html>

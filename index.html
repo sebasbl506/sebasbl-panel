@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SebasBL - Modo Mantenimiento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+    .fondo {
+      background: url('sebasbl_mantenimiento.png') no-repeat center center fixed;
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .acceso {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+    }
+    .btn-acceso {
+      background: gold;
+      color: black;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .pin-form {
+      margin-top: 10px;
+      display: none;
+    }
+    .pin-form input {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      width: 150px;
+      text-align: center;
+    }
+    .pin-form button {
+      padding: 0.5rem 1rem;
+      margin-left: 10px;
+      border-radius: 6px;
+      border: none;
+      background: gold;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="fondo">
+    <div class="acceso">
+      <button class="btn-acceso" onclick="document.getElementById('pinForm').style.display='block'">🔐 Admin</button>
+      <div class="pin-form" id="pinForm">
+        <input type="password" id="pinInput" placeholder="PIN">
+        <button onclick="verificarPIN()">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function verificarPIN() {
+      const pin = document.getElementById('pinInput').value;
+      if (pin === "1506") {
+        alert("✅ Mantenimiento desactivado. Redirigiendo al panel...");
+        window.location.href = "https://sebasbl506.github.io/panel-sebasbl/";
+      } else {
+        alert("❌ PIN incorrecto");
+      }
+    }
+  </script>
+</body>
+</html>
